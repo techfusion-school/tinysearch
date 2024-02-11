@@ -50,4 +50,17 @@ class TinySearchTest {
         // then
         Assertions.assertEquals(Set.of(helloWorldDoc, myNameDoc), Set.copyOf(result));
     }
+
+    @Test
+    public void shouldFilterOutIrrelevantDocs() {
+        // given
+        List.of(new Document("one two"), new Document("three four"), new Document("third"))
+                .forEach(tinySearch::indexDocument);
+
+        // when
+        List<Document> result = tinySearch.searchQuery(new SearchQuery("five four"));
+
+        // then
+        Assertions.assertTrue(result.isEmpty());
+    }
 }

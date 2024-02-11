@@ -14,11 +14,13 @@ public class TinySearch {
         List<Term> terms = termProducer.produceTerms(searchQuery.query());
 
         Set<DocumentId> currentDocumentIds = new HashSet<>();
+        boolean firstTerm = true;
         for (Term term : terms) {
             List<DocumentId> documentIds = invertedIndex.getDocumentIds(term);
 
-            if (currentDocumentIds.isEmpty()) {
+            if (firstTerm) {
                 currentDocumentIds = Set.copyOf(documentIds);
+                firstTerm = false;
             } else {
                 currentDocumentIds = intersect(currentDocumentIds, Set.copyOf(documentIds));
             }
